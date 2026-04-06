@@ -1,0 +1,46 @@
+[project]
+name = "oatp"
+version = "0.1.0"
+description = "OAT Proxy – Open Agent Telemetry interceptor for LLM calls"
+requires-python = ">=3.12"
+dependencies = [
+    "fastapi>=0.115,<1",
+    "uvicorn[standard]>=0.34,<1",
+    "httpx>=0.28,<1",
+    "opentelemetry-api>=1.30,<2",
+    "opentelemetry-sdk>=1.30,<2",
+    "opentelemetry-exporter-otlp-proto-grpc>=1.30,<2",
+    "opentelemetry-semantic-conventions>=0.51b0",
+    "qdrant-client>=1.13,<2",
+    "fastembed>=0.6,<1",
+    "pydantic>=2.10,<3",
+]
+
+[project.optional-dependencies]
+dev = [
+    "pytest>=8,<9",
+    "pytest-asyncio>=0.25,<1",
+    "httpx",
+    "crewai>=1.13,<2",
+    "autogen-agentchat>=0.4,<1",
+    "autogen-ext[openai]>=0.4,<1",
+    "langsmith>=0.7,<1",
+    "openai>=1.30,<2",
+]
+
+[tool.hatch.build.targets.wheel]
+packages = ["logic"]
+
+[tool.pytest.ini_options]
+markers = [
+    "integration: requires docker compose services (Qdrant + Jaeger)",
+]
+asyncio_mode = "auto"
+filterwarnings = [
+    "ignore:langsmith.wrappers._openai_agents is deprecated:DeprecationWarning",
+]
+
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
